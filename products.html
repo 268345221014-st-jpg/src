@@ -1,0 +1,54 @@
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6 p-6">
+
+  <!-- Card -->
+  <div class="bg-white rounded-xl shadow-lg p-4">
+
+    <img
+      src="https://images.unsplash.com/photo-1583512603805-3cc6b41f3edb"
+      class="rounded-lg h-48 w-full object-cover"
+    >
+
+    <h3 class="text-xl font-bold mt-4">
+      อาหารสุนัข
+    </h3>
+
+    <p class="text-gray-600">
+      อาหารคุณภาพสำหรับสุนัขทุกวัย
+    </p>
+
+    <button
+      class="bg-blue-500 text-white px-4 py-2 rounded mt-4"
+      onclick="openModal()"
+    >
+      ดูรายละเอียด
+    </button>
+
+  </div>
+
+</div>
+<!-- Modal -->
+<div
+  id="modal"
+  class="hidden fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center"
+>
+
+  <div class="bg-white p-6 rounded-xl w-80">
+
+    <h2 class="text-2xl font-bold mb-4">
+      รายละเอียดสินค้า
+    </h2>
+
+    <p>
+      อาหารสุนัขเกรดพรีเมียม
+    </p>
+
+    <button
+      onclick="closeModal()"
+      class="bg-red-500 text-white px-4 py-2 rounded mt-4"
+    >
+      ปิด
+    </button>
+
+  </div>
+
+</div>
