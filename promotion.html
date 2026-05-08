@@ -1,9 +1,304 @@
-<div class="bg-pink-200 p-10 text-center">
-  <h1 class="text-4xl font-bold">
-    โปรโมชั่นเดือนนี้
-  </h1>
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PetShop — โปรโมชั่น</title>
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    /* ── Promo Hero ───────────────────────────────────────── */
+    .promo-hero {
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+      padding: 4rem 2rem;
+      text-align: center;
+      position: relative; overflow: hidden;
+    }
+    .promo-hero::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Ccircle cx='30' cy='30' r='4'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    }
+    .promo-hero .badge {
+      display: inline-block;
+      background: rgba(255,255,255,.2); color: #fff;
+      font-family: 'Prompt', sans-serif; font-size: .8rem; font-weight: 600;
+      letter-spacing: 1.5px; text-transform: uppercase;
+      padding: .3rem 1rem; border-radius: 99px;
+      border: 1px solid rgba(255,255,255,.3);
+      margin-bottom: 1rem; position: relative;
+    }
+    .promo-hero h1 {
+      font-weight: 800; font-size: clamp(2rem, 5vw, 3.2rem);
+      color: #fff; margin-bottom: .6rem; position: relative;
+    }
+    .promo-hero p { color: rgba(255,255,255,.85); font-size: 1.1rem; position: relative; }
 
-  <p class="mt-4">
-    ซื้ออาหารแมว ลด 20%
-  </p>
+    /* ── Countdown ────────────────────────────────────────── */
+    .countdown-wrap {
+      background: var(--dark);
+      padding: 1.8rem 2rem; text-align: center;
+    }
+    .countdown-label {
+      color: #a8a29e; font-family: 'Prompt', sans-serif;
+      font-size: .85rem; letter-spacing: 1px; text-transform: uppercase;
+      margin-bottom: .8rem;
+    }
+    .countdown {
+      display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap;
+    }
+    .cd-box {
+      background: #292524; border-radius: 10px;
+      padding: .8rem 1.2rem; min-width: 70px;
+      text-align: center;
+    }
+    .cd-num {
+      font-family: 'Prompt', sans-serif; font-weight: 800;
+      font-size: 2rem; color: var(--accent); line-height: 1;
+    }
+    .cd-unit { color: #78716c; font-size: .75rem; margin-top: .2rem; }
+
+    /* ── Promo Cards ──────────────────────────────────────── */
+    .promos-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1.5rem;
+    }
+    .promo-card {
+      background: #fff;
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: var(--shadow-sm);
+      border: 1px solid var(--border);
+      transition: transform .25s, box-shadow .25s;
+    }
+    .promo-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); }
+
+    .promo-card-top {
+      padding: 2rem;
+      display: flex; align-items: center; gap: 1.2rem;
+    }
+    .promo-icon {
+      width: 64px; height: 64px; border-radius: 14px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.8rem; flex-shrink: 0;
+    }
+    .promo-icon.orange { background: #fff7ed; }
+    .promo-icon.pink   { background: #fdf2f8; }
+    .promo-icon.blue   { background: #eff6ff; }
+    .promo-icon.green  { background: #f0fdf4; }
+
+    .promo-info h3 {
+      font-weight: 700; font-size: 1.1rem; margin-bottom: .3rem; color: var(--dark);
+    }
+    .promo-info p { color: var(--muted); font-size: .9rem; line-height: 1.5; }
+
+    .promo-card-bottom {
+      padding: 1rem 2rem 1.5rem;
+      display: flex; align-items: center; justify-content: space-between;
+      border-top: 1px solid var(--border);
+    }
+    .promo-tag {
+      display: inline-block;
+      background: #fff7ed; color: var(--primary);
+      font-family: 'Prompt', sans-serif; font-size: .78rem; font-weight: 700;
+      padding: .3rem .8rem; border-radius: 99px;
+      border: 1px solid #fed7aa;
+    }
+    .promo-expiry { color: #a8a29e; font-size: .8rem; }
+
+    /* ── Banner ───────────────────────────────────────────── */
+    .banner {
+      background: linear-gradient(135deg, #1c1917 0%, #292524 100%);
+      border-radius: var(--radius);
+      padding: 2.5rem;
+      display: flex; align-items: center; justify-content: space-between;
+      flex-wrap: wrap; gap: 1.5rem;
+      margin-top: 2.5rem;
+      position: relative; overflow: hidden;
+    }
+    .banner::before {
+      content: '🐾';
+      position: absolute; right: 2rem; top: 50%;
+      transform: translateY(-50%);
+      font-size: 8rem; opacity: .05; pointer-events: none;
+    }
+    .banner-text h3 {
+      font-weight: 800; font-size: 1.5rem; color: #fff; margin-bottom: .4rem;
+    }
+    .banner-text p { color: #a8a29e; }
+  </style>
+</head>
+<body>
+
+<!-- ═══ NAVBAR ═══ -->
+<nav>
+  <a href="index.html" class="nav-logo">🐾 Pet<span>Shop</span></a>
+  <ul class="nav-links">
+    <li><a href="index.html">หน้าแรก</a></li>
+    <li><a href="products.html">สินค้า</a></li>
+    <li><a href="promotion.html">โปรโมชั่น</a></li>
+    <li><a href="contact.html">ติดต่อ</a></li>
+  </ul>
+  <button class="hamburger" onclick="toggleMenu()" aria-label="เมนู">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+<div class="mobile-menu" id="mobileMenu">
+  <a href="index.html"     onclick="toggleMenu()">🏠 หน้าแรก</a>
+  <a href="products.html"  onclick="toggleMenu()">🛍 สินค้า</a>
+  <a href="promotion.html" onclick="toggleMenu()">🎉 โปรโมชั่น</a>
+  <a href="contact.html"   onclick="toggleMenu()">📩 ติดต่อ</a>
 </div>
+
+<!-- ═══ PROMO HERO ═══ -->
+<div class="promo-hero">
+  <div class="badge">🎉 Limited Time Offers</div>
+  <h1>โปรโมชั่นเดือนนี้</h1>
+  <p>ข้อเสนอสุดพิเศษที่คุณไม่ควรพลาด — จำนวนจำกัด!</p>
+</div>
+
+<!-- ═══ COUNTDOWN ═══ -->
+<div class="countdown-wrap">
+  <div class="countdown-label">⏰ โปรโมชั่นสิ้นสุดใน</div>
+  <div class="countdown">
+    <div class="cd-box"><div class="cd-num" id="cdDays">00</div><div class="cd-unit">วัน</div></div>
+    <div class="cd-box"><div class="cd-num" id="cdHours">00</div><div class="cd-unit">ชั่วโมง</div></div>
+    <div class="cd-box"><div class="cd-num" id="cdMins">00</div><div class="cd-unit">นาที</div></div>
+    <div class="cd-box"><div class="cd-num" id="cdSecs">00</div><div class="cd-unit">วินาที</div></div>
+  </div>
+</div>
+
+<!-- ═══ PROMO CARDS ═══ -->
+<section>
+  <div class="container section">
+    <h2 class="section-title">โปรโมชั่น<span>ทั้งหมด</span></h2>
+    <p class="section-sub">อัพเดตทุกต้นเดือน ติดตามให้ดีนะ!</p>
+
+    <div class="promos-grid">
+
+      <div class="promo-card">
+        <div class="promo-card-top">
+          <div class="promo-icon orange">🐈</div>
+          <div class="promo-info">
+            <h3>ลด 20% อาหารแมว</h3>
+            <p>อาหารแมวทุกรายการในร้าน ลดพิเศษ 20% ซื้อได้ไม่จำกัดจำนวน</p>
+          </div>
+        </div>
+        <div class="promo-card-bottom">
+          <span class="promo-tag">ลด 20%</span>
+          <span class="promo-expiry">หมดเขต 31 พ.ค. 68</span>
+        </div>
+      </div>
+
+      <div class="promo-card">
+        <div class="promo-card-top">
+          <div class="promo-icon pink">🎾</div>
+          <div class="promo-info">
+            <h3>ลด 15% ของเล่นสุนัข</h3>
+            <p>ของเล่นสุนัขทุกชิ้น ลดทันที 15% ไม่ต้องใช้โค้ด</p>
+          </div>
+        </div>
+        <div class="promo-card-bottom">
+          <span class="promo-tag">ลด 15%</span>
+          <span class="promo-expiry">หมดเขต 31 พ.ค. 68</span>
+        </div>
+      </div>
+
+      <div class="promo-card">
+        <div class="promo-card-top">
+          <div class="promo-icon blue">🚚</div>
+          <div class="promo-info">
+            <h3>ส่งฟรีทั่วไทย</h3>
+            <p>เมื่อซื้อสินค้าครบ ฿500 ขึ้นไป จัดส่งฟรีถึงบ้านคุณทุกจังหวัด</p>
+          </div>
+        </div>
+        <div class="promo-card-bottom">
+          <span class="promo-tag">ฟรีค่าส่ง</span>
+          <span class="promo-expiry">ตลอดเดือนพฤษภาคม</span>
+        </div>
+      </div>
+
+      <div class="promo-card">
+        <div class="promo-card-top">
+          <div class="promo-icon green">🎁</div>
+          <div class="promo-info">
+            <h3>ซื้อ 2 แถม 1</h3>
+            <p>ซื้ออาหารกระป๋องแมว 2 กระป๋อง รับฟรีอีก 1 กระป๋อง (ราคาต่ำสุด)</p>
+          </div>
+        </div>
+        <div class="promo-card-bottom">
+          <span class="promo-tag">Buy 2 Get 1</span>
+          <span class="promo-expiry">หมดเขต 15 พ.ค. 68</span>
+        </div>
+      </div>
+
+      <div class="promo-card">
+        <div class="promo-card-top">
+          <div class="promo-icon orange">💳</div>
+          <div class="promo-info">
+            <h3>ผ่อน 0% 3 เดือน</h3>
+            <p>ผ่อนชำระ 0% นาน 3 เดือน เมื่อซื้อสินค้าครบ ฿1,000 ขึ้นไปผ่านบัตรเครดิต</p>
+          </div>
+        </div>
+        <div class="promo-card-bottom">
+          <span class="promo-tag">ผ่อน 0%</span>
+          <span class="promo-expiry">ตลอดเดือนพฤษภาคม</span>
+        </div>
+      </div>
+
+      <div class="promo-card">
+        <div class="promo-card-top">
+          <div class="promo-icon pink">⭐</div>
+          <div class="promo-info">
+            <h3>สมาชิกรับ Point 2x</h3>
+            <p>สมาชิก PetShop Club รับ Point สะสมสองเท่าทุกการซื้อตลอดเดือนนี้</p>
+          </div>
+        </div>
+        <div class="promo-card-bottom">
+          <span class="promo-tag">Point ×2</span>
+          <span class="promo-expiry">หมดเขต 31 พ.ค. 68</span>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Banner -->
+    <div class="banner">
+      <div class="banner-text">
+        <h3>สมัครสมาชิกฟรี รับส่วนลดทันที ฿50!</h3>
+        <p>สมัครง่าย ได้สิทธิ์พิเศษมากมาย และสะสม Point ทุกการซื้อ</p>
+      </div>
+      <a href="contact.html" class="btn btn-primary">สมัครเลย →</a>
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══ FOOTER ═══ -->
+<footer>
+  <p>© 2025 <span>PetShop</span> — ร้านของใช้สัตว์เลี้ยงคุณภาพ 🐾</p>
+</footer>
+
+<div class="toast" id="toast"></div>
+<script src="js/main.js"></script>
+<script>
+  // Countdown to end of month
+  function updateCountdown() {
+    const now  = new Date();
+    const end  = new Date(now.getFullYear(), now.getMonth() + 1, 1);
+    const diff = end - now;
+    const d  = Math.floor(diff / 86400000);
+    const h  = Math.floor((diff % 86400000) / 3600000);
+    const m  = Math.floor((diff % 3600000)  / 60000);
+    const s  = Math.floor((diff % 60000)    / 1000);
+    const pad = n => String(n).padStart(2, '0');
+    document.getElementById('cdDays').textContent  = pad(d);
+    document.getElementById('cdHours').textContent = pad(h);
+    document.getElementById('cdMins').textContent  = pad(m);
+    document.getElementById('cdSecs').textContent  = pad(s);
+  }
+  updateCountdown();
+  setInterval(updateCountdown, 1000);
+</script>
+</body>
+</html>

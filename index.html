@@ -3,38 +3,254 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PetShop — หน้าแรก</title>
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    /* ── Hero ─────────────────────────────────────────────── */
+    .hero {
+      background: linear-gradient(135deg, #1c1917 0%, #292524 50%, #1c1917 100%);
+      min-height: calc(100vh - var(--nav-height));
+      display: flex; align-items: center; justify-content: center;
+      text-align: center; padding: 4rem 2rem;
+      position: relative; overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse at 60% 50%, rgba(249,115,22,.15) 0%, transparent 70%);
+    }
+    .hero-paw { position: absolute; font-size: 8rem; opacity: .04; pointer-events: none; user-select: none; }
+    .hero-paw.p1 { top: 10%; left:  5%; transform: rotate(-20deg); }
+    .hero-paw.p2 { bottom: 5%; right: 8%; transform: rotate(15deg); font-size: 6rem; }
+    .hero-paw.p3 { top: 40%; left: 44%; transform: rotate(5deg); font-size: 12rem; opacity: .025; }
 
-  <link rel="stylesheet" href="./css/style.css">
+    .hero-content { position: relative; z-index: 1; max-width: 720px; }
+    .hero-badge {
+      display: inline-block;
+      background: var(--primary); color: #fff;
+      font-family: 'Prompt', sans-serif; font-size: .78rem; font-weight: 600;
+      letter-spacing: 1.5px; text-transform: uppercase;
+      padding: .3rem .9rem; border-radius: 99px; margin-bottom: 1.2rem;
+    }
+    .hero h1 {
+      font-weight: 800; font-size: clamp(2.2rem, 5vw, 3.6rem);
+      color: #fff; line-height: 1.2; margin-bottom: 1rem;
+    }
+    .hero h1 em { font-style: normal; color: var(--accent); }
+    .hero p { color: #a8a29e; font-size: 1.1rem; line-height: 1.7; margin-bottom: 2rem; }
+    .hero-btns { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
 
-  <title>Pet Shop</title>
+    /* ── Features strip ──────────────────────────────────── */
+    .features {
+      background: #fff;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: 1.8rem 2rem;
+    }
+    .features-grid {
+      max-width: 1100px; margin: 0 auto;
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1.5rem; text-align: center;
+    }
+    .feat-item .icon { font-size: 1.8rem; margin-bottom: .4rem; }
+    .feat-item h4 { font-family: 'Prompt', sans-serif; font-weight: 700; font-size: .95rem; color: var(--dark); }
+    .feat-item p  { color: var(--muted); font-size: .85rem; margin-top: .2rem; }
+
+    /* ── Products preview ─────────────────────────────────── */
+    .products-section { background: var(--light); }
+
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(255px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .card {
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: var(--shadow-sm);
+      border: 1px solid var(--border);
+      transition: transform .25s, box-shadow .25s;
+      cursor: pointer;
+    }
+    .card:hover { transform: translateY(-6px); box-shadow: var(--shadow-md); }
+
+    .card-img-wrap { overflow: hidden; position: relative; }
+    .card-img { width: 100%; height: 200px; object-fit: cover; transition: transform .4s; }
+    .card:hover .card-img { transform: scale(1.04); }
+
+    .card-tag {
+      position: absolute; top: 12px; left: 12px;
+      background: var(--primary); color: #fff;
+      font-family: 'Prompt', sans-serif; font-size: .72rem; font-weight: 600;
+      padding: .25rem .7rem; border-radius: 99px;
+    }
+
+    .card-body { padding: 1.2rem; }
+    .card-body h3 { font-weight: 700; font-size: 1.05rem; margin-bottom: .4rem; color: var(--dark); }
+    .card-body p  { color: var(--muted); font-size: .88rem; line-height: 1.6; margin-bottom: 1rem; }
+    .card-footer  { display: flex; align-items: center; justify-content: space-between; }
+    .price        { font-family: 'Prompt', sans-serif; font-weight: 700; font-size: 1.1rem; color: var(--primary); }
+    .card-btn {
+      background: var(--dark); color: #fff; border: none;
+      border-radius: 8px; padding: .45rem .95rem;
+      font-family: 'Prompt', sans-serif; font-size: .83rem; font-weight: 600;
+      cursor: pointer; transition: background .2s;
+    }
+    .card-btn:hover { background: var(--primary); }
+
+    .see-all { text-align: center; margin-top: 2.5rem; }
+  </style>
 </head>
+<body>
 
-<body class="bg-gray-100">
+<!-- ═══ NAVBAR ═══ -->
+<nav>
+  <a href="index.html" class="nav-logo">🐾 Pet<span>Shop</span></a>
+  <ul class="nav-links">
+    <li><a href="index.html">หน้าแรก</a></li>
+    <li><a href="products.html">สินค้า</a></li>
+    <li><a href="promotion.html">โปรโมชั่น</a></li>
+    <li><a href="contact.html">ติดต่อ</a></li>
+  </ul>
+  <button class="hamburger" onclick="toggleMenu()" aria-label="เมนู">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+<div class="mobile-menu" id="mobileMenu">
+  <a href="index.html"     onclick="toggleMenu()">🏠 หน้าแรก</a>
+  <a href="products.html"  onclick="toggleMenu()">🛍 สินค้า</a>
+  <a href="promotion.html" onclick="toggleMenu()">🎉 โปรโมชั่น</a>
+  <a href="contact.html"   onclick="toggleMenu()">📩 ติดต่อ</a>
+</div>
 
-  <!-- Navbar -->
-  <nav class="bg-blue-500 text-white p-4 flex justify-between">
-    <h1 class="text-2xl font-bold">PetShop</h1>
+<!-- ═══ HERO ═══ -->
+<section class="hero">
+  <div class="hero-paw p1">🐾</div>
+  <div class="hero-paw p2">🐾</div>
+  <div class="hero-paw p3">🐾</div>
+  <div class="hero-content">
+    <div class="hero-badge">🐕 ร้านสัตว์เลี้ยงคุณภาพ</div>
+    <h1>ทุกสิ่งที่<em>สัตว์เลี้ยง</em><br>ของคุณต้องการ</h1>
+    <p>อาหาร ของเล่น และอุปกรณ์คุณภาพสูง<br>คัดสรรมาเพื่อน้องขนฟูของคุณโดยเฉพาะ</p>
+    <div class="hero-btns">
+      <a href="products.html" class="btn btn-primary">ดูสินค้าทั้งหมด</a>
+      <a href="promotion.html" class="btn btn-outline">โปรโมชั่นพิเศษ</a>
+    </div>
+  </div>
+</section>
 
-    <ul class="flex gap-4">
-      <li><a href="index.html">Home</a></li>
-      <li><a href="products.html">Products</a></li>
-      <li><a href="promotion.html">Promotion</a></li>
-      <li><a href="contact.html">Contact</a></li>
-    </ul>
-  </nav>
+<!-- ═══ FEATURES ═══ -->
+<div class="features">
+  <div class="features-grid">
+    <div class="feat-item"><div class="icon">🚚</div><h4>จัดส่งฟรี</h4><p>เมื่อซื้อครบ ฿500</p></div>
+    <div class="feat-item"><div class="icon">✅</div><h4>สินค้าคุณภาพ</h4><p>คัดสรรจากแบรนด์ชั้นนำ</p></div>
+    <div class="feat-item"><div class="icon">🔄</div><h4>คืนสินค้าได้</h4><p>ภายใน 7 วัน</p></div>
+    <div class="feat-item"><div class="icon">💬</div><h4>บริการ 24 ชม.</h4><p>ทีมงานพร้อมช่วยเสมอ</p></div>
+  </div>
+</div>
 
-  <!-- Hero -->
-  <section class="bg-yellow-200 p-10 text-center">
-    <h2 class="text-4xl font-bold mb-4">
-      ร้านขายของใช้สัตว์เลี้ยง
-    </h2>
+<!-- ═══ PRODUCTS PREVIEW ═══ -->
+<section class="products-section">
+  <div class="container section">
+    <h2 class="section-title">สินค้า<span>แนะนำ</span></h2>
+    <p class="section-sub">คัดสรรสินค้าคุณภาพสำหรับสัตว์เลี้ยงทุกชนิด</p>
 
-    <p>
-      อาหาร ของเล่น และอุปกรณ์คุณภาพสำหรับสัตว์เลี้ยง
-    </p>
-  </section>
+    <div class="cards-grid">
 
-  <script src="./js/main.js"></script>
-  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4"></div>
+      <div class="card" onclick="openModal('อาหารสุนัขพรีเมียม','อาหารสุนัขเกรดพรีเมียม สูตรพิเศษเหมาะสำหรับสุนัขทุกสายพันธุ์ ให้พลังงานสมดุลและบำรุงขนให้เงางาม','฿350','https://images.unsplash.com/photo-1583512603805-3cc6b41f3edb?w=600&q=80')">
+        <div class="card-img-wrap">
+          <img class="card-img" src="https://images.unsplash.com/photo-1583512603805-3cc6b41f3edb?w=600&q=80" alt="อาหารสุนัข" loading="lazy">
+          <span class="card-tag">🐕 สุนัข</span>
+        </div>
+        <div class="card-body">
+          <h3>อาหารสุนัขพรีเมียม</h3>
+          <p>สูตรพิเศษให้พลังงานสมดุล บำรุงขนและสุขภาพ</p>
+          <div class="card-footer">
+            <span class="price">฿350</span>
+            <button class="card-btn">ดูรายละเอียด</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" onclick="openModal('อาหารแมวออร์แกนิก','อาหารแมวสูตรออร์แกนิก ทำจากวัตถุดิบธรรมชาติ 100% ไม่มีสารเพิ่มเติม เหมาะสำหรับแมวทุกวัย','฿290','https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?w=600&q=80')">
+        <div class="card-img-wrap">
+          <img class="card-img" src="https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?w=600&q=80" alt="อาหารแมว" loading="lazy">
+          <span class="card-tag">🐈 แมว</span>
+        </div>
+        <div class="card-body">
+          <h3>อาหารแมวออร์แกนิก</h3>
+          <p>วัตถุดิบธรรมชาติ 100% ดีต่อสุขภาพน้องแมว</p>
+          <div class="card-footer">
+            <span class="price">฿290</span>
+            <button class="card-btn">ดูรายละเอียด</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" onclick="openModal('ของเล่นสุนัข Set 5 ชิ้น','ของเล่นสุนัขเซ็ตสุดคุ้ม 5 ชิ้น ทำจากยางธรรมชาติปลอดภัย ช่วยบรรเทาความเบื่อและฝึกทักษะ','฿199','https://images.unsplash.com/photo-1601758125946-6ec2ef64daf8?w=600&q=80')">
+        <div class="card-img-wrap">
+          <img class="card-img" src="https://images.unsplash.com/photo-1601758125946-6ec2ef64daf8?w=600&q=80" alt="ของเล่น" loading="lazy">
+          <span class="card-tag">🎾 ของเล่น</span>
+        </div>
+        <div class="card-body">
+          <h3>ของเล่นสุนัข Set 5 ชิ้น</h3>
+          <p>ยางธรรมชาติ ปลอดภัย ช่วยบรรเทาความเบื่อ</p>
+          <div class="card-footer">
+            <span class="price">฿199</span>
+            <button class="card-btn">ดูรายละเอียด</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" onclick="openModal('ที่นอนสัตว์เลี้ยง Cozy','ที่นอนสัตว์เลี้ยงนุ่มเป็นพิเศษ วัสดุกำมะหยี่คุณภาพสูง ซักทำความสะอาดได้ง่าย มีหลายขนาดให้เลือก','฿450','https://images.unsplash.com/photo-1541781774459-bb2af2f05b55?w=600&q=80')">
+        <div class="card-img-wrap">
+          <img class="card-img" src="https://images.unsplash.com/photo-1541781774459-bb2af2f05b55?w=600&q=80" alt="ที่นอน" loading="lazy">
+          <span class="card-tag">🛏 อุปกรณ์</span>
+        </div>
+        <div class="card-body">
+          <h3>ที่นอนสัตว์เลี้ยง Cozy</h3>
+          <p>กำมะหยี่นุ่ม ซักได้ง่าย หลายขนาดให้เลือก</p>
+          <div class="card-footer">
+            <span class="price">฿450</span>
+            <button class="card-btn">ดูรายละเอียด</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="see-all">
+      <a href="products.html" class="btn btn-dark">ดูสินค้าทั้งหมด →</a>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ FOOTER ═══ -->
+<footer>
+  <p>© 2025 <span>PetShop</span> — ร้านของใช้สัตว์เลี้ยงคุณภาพ 🐾</p>
+</footer>
+
+<!-- ═══ MODAL ═══ -->
+<div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">
+  <div class="modal" id="modalBox">
+    <img id="modalImg" class="modal-img" src="" alt="">
+    <div class="modal-body">
+      <h2 id="modalTitle"></h2>
+      <div class="modal-price" id="modalPrice"></div>
+      <p id="modalDesc"></p>
+      <div class="modal-actions">
+        <button class="modal-close" onclick="closeModal()">ปิด</button>
+        <button class="modal-add"   onclick="addToCart()">🛒 เพิ่มลงตะกร้า</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ TOAST ═══ -->
+<div class="toast" id="toast"></div>
+
+<script src="js/main.js"></script>
 </body>
 </html>

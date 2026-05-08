@@ -1,54 +1,291 @@
-<div class="grid grid-cols-1 md:grid-cols-3 gap-6 p-6">
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PetShop — สินค้า</title>
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    /* ── Filter bar ───────────────────────────────────────── */
+    .filter-bar {
+      display: flex; gap: .6rem; flex-wrap: wrap;
+      margin-bottom: 2rem;
+    }
+    .filter-btn {
+      padding: .45rem 1.1rem;
+      border: 1.5px solid var(--border);
+      background: #fff; color: var(--mid);
+      border-radius: 99px;
+      font-family: 'Prompt', sans-serif; font-size: .85rem; font-weight: 600;
+      cursor: pointer; transition: all .2s;
+    }
+    .filter-btn:hover,
+    .filter-btn.active {
+      background: var(--primary);
+      border-color: var(--primary);
+      color: #fff;
+    }
 
-  <!-- Card -->
-  <div class="bg-white rounded-xl shadow-lg p-4">
+    /* ── Grid ─────────────────────────────────────────────── */
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(255px, 1fr));
+      gap: 1.5rem;
+    }
 
-    <img
-      src="https://images.unsplash.com/photo-1583512603805-3cc6b41f3edb"
-      class="rounded-lg h-48 w-full object-cover"
-    >
+    /* ── Card ─────────────────────────────────────────────── */
+    .card {
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: var(--shadow-sm);
+      border: 1px solid var(--border);
+      transition: transform .25s, box-shadow .25s;
+      cursor: pointer;
+    }
+    .card:hover { transform: translateY(-6px); box-shadow: var(--shadow-md); }
 
-    <h3 class="text-xl font-bold mt-4">
-      อาหารสุนัข
-    </h3>
+    .card-img-wrap { overflow: hidden; position: relative; }
+    .card-img { width: 100%; height: 200px; object-fit: cover; transition: transform .4s; }
+    .card:hover .card-img { transform: scale(1.04); }
+    .card-tag {
+      position: absolute; top: 12px; left: 12px;
+      background: var(--primary); color: #fff;
+      font-family: 'Prompt', sans-serif; font-size: .72rem; font-weight: 600;
+      padding: .25rem .7rem; border-radius: 99px;
+    }
+    .card-badge-sale {
+      position: absolute; top: 12px; right: 12px;
+      background: #ef4444; color: #fff;
+      font-family: 'Prompt', sans-serif; font-size: .7rem; font-weight: 700;
+      padding: .25rem .6rem; border-radius: 99px;
+    }
 
-    <p class="text-gray-600">
-      อาหารคุณภาพสำหรับสุนัขทุกวัย
-    </p>
+    .card-body { padding: 1.2rem; }
+    .card-body h3 { font-weight: 700; font-size: 1.05rem; margin-bottom: .4rem; }
+    .card-body p  { color: var(--muted); font-size: .88rem; line-height: 1.6; margin-bottom: 1rem; }
+    .card-footer  { display: flex; align-items: center; justify-content: space-between; }
+    .price        { font-family: 'Prompt', sans-serif; font-weight: 700; font-size: 1.1rem; color: var(--primary); }
+    .price-old    { font-size: .8rem; color: #a8a29e; text-decoration: line-through; margin-left: .3rem; }
+    .card-btn {
+      background: var(--dark); color: #fff; border: none;
+      border-radius: 8px; padding: .45rem .95rem;
+      font-family: 'Prompt', sans-serif; font-size: .83rem; font-weight: 600;
+      cursor: pointer; transition: background .2s;
+    }
+    .card-btn:hover { background: var(--primary); }
 
-    <button
-      class="bg-blue-500 text-white px-4 py-2 rounded mt-4"
-      onclick="openModal()"
-    >
-      ดูรายละเอียด
-    </button>
+    /* ── Hidden filter ─────────────────────────────────────── */
+    .card.hidden { display: none; }
+  </style>
+</head>
+<body>
 
-  </div>
-
+<!-- ═══ NAVBAR ═══ -->
+<nav>
+  <a href="index.html" class="nav-logo">🐾 Pet<span>Shop</span></a>
+  <ul class="nav-links">
+    <li><a href="index.html">หน้าแรก</a></li>
+    <li><a href="products.html">สินค้า</a></li>
+    <li><a href="promotion.html">โปรโมชั่น</a></li>
+    <li><a href="contact.html">ติดต่อ</a></li>
+  </ul>
+  <button class="hamburger" onclick="toggleMenu()" aria-label="เมนู">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+<div class="mobile-menu" id="mobileMenu">
+  <a href="index.html"     onclick="toggleMenu()">🏠 หน้าแรก</a>
+  <a href="products.html"  onclick="toggleMenu()">🛍 สินค้า</a>
+  <a href="promotion.html" onclick="toggleMenu()">🎉 โปรโมชั่น</a>
+  <a href="contact.html"   onclick="toggleMenu()">📩 ติดต่อ</a>
 </div>
-<!-- Modal -->
-<div
-  id="modal"
-  class="hidden fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center"
->
 
-  <div class="bg-white p-6 rounded-xl w-80">
-
-    <h2 class="text-2xl font-bold mb-4">
-      รายละเอียดสินค้า
-    </h2>
-
-    <p>
-      อาหารสุนัขเกรดพรีเมียม
-    </p>
-
-    <button
-      onclick="closeModal()"
-      class="bg-red-500 text-white px-4 py-2 rounded mt-4"
-    >
-      ปิด
-    </button>
-
-  </div>
-
+<!-- ═══ PAGE HERO ═══ -->
+<div class="page-hero">
+  <h1>สินค้า<em>ทั้งหมด</em></h1>
+  <p>อาหาร ของเล่น และอุปกรณ์สัตว์เลี้ยงคุณภาพสูง</p>
 </div>
+
+<!-- ═══ PRODUCTS ═══ -->
+<section>
+  <div class="container section">
+
+    <!-- Filter -->
+    <div class="filter-bar">
+      <button class="filter-btn active" onclick="filterCards('all', this)">ทั้งหมด</button>
+      <button class="filter-btn" onclick="filterCards('dog',  this)">🐕 สุนัข</button>
+      <button class="filter-btn" onclick="filterCards('cat',  this)">🐈 แมว</button>
+      <button class="filter-btn" onclick="filterCards('toy',  this)">🎾 ของเล่น</button>
+      <button class="filter-btn" onclick="filterCards('gear', this)">🛏 อุปกรณ์</button>
+    </div>
+
+    <div class="cards-grid" id="cardGrid">
+
+      <!-- Dog -->
+      <div class="card" data-cat="dog" onclick="openModal('อาหารสุนัขพรีเมียม','อาหารสุนัขเกรดพรีเมียม สูตรพิเศษเหมาะสำหรับสุนัขทุกสายพันธุ์ ให้พลังงานสมดุลและบำรุงขนให้เงางาม','฿350','https://images.unsplash.com/photo-1583512603805-3cc6b41f3edb?w=600&q=80')">
+        <div class="card-img-wrap">
+          <img class="card-img" src="https://images.unsplash.com/photo-1583512603805-3cc6b41f3edb?w=600&q=80" alt="อาหารสุนัข" loading="lazy">
+          <span class="card-tag">🐕 สุนัข</span>
+        </div>
+        <div class="card-body">
+          <h3>อาหารสุนัขพรีเมียม</h3>
+          <p>สูตรพิเศษให้พลังงานสมดุล บำรุงขนและสุขภาพ</p>
+          <div class="card-footer">
+            <span class="price">฿350</span>
+            <button class="card-btn">ดูรายละเอียด</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" data-cat="dog" onclick="openModal('อาหารสุนัขลูก','อาหารสำหรับลูกสุนัขโดยเฉพาะ อุดมด้วยโปรตีนและแคลเซียม เสริมสร้างกระดูกและกล้ามเนื้อ','฿280','https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=600&q=80')">
+        <div class="card-img-wrap">
+          <img class="card-img" src="https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=600&q=80" alt="ลูกสุนัข" loading="lazy">
+          <span class="card-tag">🐕 สุนัข</span>
+          <span class="card-badge-sale">Sale</span>
+        </div>
+        <div class="card-body">
+          <h3>อาหารสุนัขลูก</h3>
+          <p>โปรตีนสูง เสริมสร้างกระดูกและกล้ามเนื้อ</p>
+          <div class="card-footer">
+            <div><span class="price">฿280</span><span class="price-old">฿320</span></div>
+            <button class="card-btn">ดูรายละเอียด</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Cat -->
+      <div class="card" data-cat="cat" onclick="openModal('อาหารแมวออร์แกนิก','อาหารแมวสูตรออร์แกนิก ทำจากวัตถุดิบธรรมชาติ 100% ไม่มีสารเพิ่มเติม เหมาะสำหรับแมวทุกวัย','฿290','https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?w=600&q=80')">
+        <div class="card-img-wrap">
+          <img class="card-img" src="https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?w=600&q=80" alt="อาหารแมว" loading="lazy">
+          <span class="card-tag">🐈 แมว</span>
+          <span class="card-badge-sale">ลด 20%</span>
+        </div>
+        <div class="card-body">
+          <h3>อาหารแมวออร์แกนิก</h3>
+          <p>วัตถุดิบธรรมชาติ 100% ดีต่อสุขภาพน้องแมว</p>
+          <div class="card-footer">
+            <div><span class="price">฿232</span><span class="price-old">฿290</span></div>
+            <button class="card-btn">ดูรายละเอียด</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" data-cat="cat" onclick="openModal('ทรายแมวคาร์บอน','ทรายแมวผสมคาร์บอน ดับกลิ่นได้ดีเยี่ยม จับตัวเป็นก้อนแน่น ไม่ฟุ้งกระจาย','฿180','https://images.unsplash.com/photo-1573865526739-10659fec78a5?w=600&q=80')">
+        <div class="card-img-wrap">
+          <img class="card-img" src="https://images.unsplash.com/photo-1573865526739-10659fec78a5?w=600&q=80" alt="แมว" loading="lazy">
+          <span class="card-tag">🐈 แมว</span>
+        </div>
+        <div class="card-body">
+          <h3>ทรายแมวคาร์บอน</h3>
+          <p>ดับกลิ่นได้ดี จับตัวเป็นก้อนแน่น ไม่ฟุ้ง</p>
+          <div class="card-footer">
+            <span class="price">฿180</span>
+            <button class="card-btn">ดูรายละเอียด</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Toy -->
+      <div class="card" data-cat="toy" onclick="openModal('ของเล่นสุนัข Set 5 ชิ้น','ของเล่นสุนัขเซ็ตสุดคุ้ม 5 ชิ้น ทำจากยางธรรมชาติปลอดภัย ช่วยบรรเทาความเบื่อและฝึกทักษะ','฿199','https://images.unsplash.com/photo-1601758125946-6ec2ef64daf8?w=600&q=80')">
+        <div class="card-img-wrap">
+          <img class="card-img" src="https://images.unsplash.com/photo-1601758125946-6ec2ef64daf8?w=600&q=80" alt="ของเล่นสุนัข" loading="lazy">
+          <span class="card-tag">🎾 ของเล่น</span>
+        </div>
+        <div class="card-body">
+          <h3>ของเล่นสุนัข Set 5 ชิ้น</h3>
+          <p>ยางธรรมชาติ ปลอดภัย ช่วยบรรเทาความเบื่อ</p>
+          <div class="card-footer">
+            <span class="price">฿199</span>
+            <button class="card-btn">ดูรายละเอียด</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" data-cat="toy" onclick="openModal('เสาลับเล็บแมว','เสาลับเล็บแมวทรงสูง ทำจากเชือกไซซาลธรรมชาติ ฐานหนักไม่โยก มีบ้านนกให้ซ่อนตัว','฿350','https://images.unsplash.com/photo-1545249390-6bdfa286032f?w=600&q=80')">
+        <div class="card-img-wrap">
+          <img class="card-img" src="https://images.unsplash.com/photo-1545249390-6bdfa286032f?w=600&q=80" alt="เสาลับเล็บ" loading="lazy">
+          <span class="card-tag">🎾 ของเล่น</span>
+        </div>
+        <div class="card-body">
+          <h3>เสาลับเล็บแมว</h3>
+          <p>เชือกไซซาลธรรมชาติ ฐานหนัก ไม่โยก</p>
+          <div class="card-footer">
+            <span class="price">฿350</span>
+            <button class="card-btn">ดูรายละเอียด</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Gear -->
+      <div class="card" data-cat="gear" onclick="openModal('ที่นอนสัตว์เลี้ยง Cozy','ที่นอนสัตว์เลี้ยงนุ่มเป็นพิเศษ วัสดุกำมะหยี่คุณภาพสูง ซักทำความสะอาดได้ง่าย มีหลายขนาดให้เลือก','฿450','https://images.unsplash.com/photo-1541781774459-bb2af2f05b55?w=600&q=80')">
+        <div class="card-img-wrap">
+          <img class="card-img" src="https://images.unsplash.com/photo-1541781774459-bb2af2f05b55?w=600&q=80" alt="ที่นอน" loading="lazy">
+          <span class="card-tag">🛏 อุปกรณ์</span>
+        </div>
+        <div class="card-body">
+          <h3>ที่นอนสัตว์เลี้ยง Cozy</h3>
+          <p>กำมะหยี่นุ่ม ซักได้ง่าย หลายขนาดให้เลือก</p>
+          <div class="card-footer">
+            <span class="price">฿450</span>
+            <button class="card-btn">ดูรายละเอียด</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" data-cat="gear" onclick="openModal('สายจูงสุนัข Reflective','สายจูงสะท้อนแสง มองเห็นได้ชัดในที่มืด วัสดุไนลอนทอหนา ปลอดภัยสำหรับสุนัขทุกขนาด','฿220','https://images.unsplash.com/photo-1548199973-03cce0bbc87b?w=600&q=80')">
+        <div class="card-img-wrap">
+          <img class="card-img" src="https://images.unsplash.com/photo-1548199973-03cce0bbc87b?w=600&q=80" alt="สายจูง" loading="lazy">
+          <span class="card-tag">🛏 อุปกรณ์</span>
+        </div>
+        <div class="card-body">
+          <h3>สายจูงสะท้อนแสง</h3>
+          <p>ไนลอนทอหนา สะท้อนแสงในที่มืด ปลอดภัย</p>
+          <div class="card-footer">
+            <span class="price">฿220</span>
+            <button class="card-btn">ดูรายละเอียด</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══ FOOTER ═══ -->
+<footer>
+  <p>© 2025 <span>PetShop</span> — ร้านของใช้สัตว์เลี้ยงคุณภาพ 🐾</p>
+</footer>
+
+<!-- ═══ MODAL ═══ -->
+<div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">
+  <div class="modal">
+    <img id="modalImg" class="modal-img" src="" alt="">
+    <div class="modal-body">
+      <h2 id="modalTitle"></h2>
+      <div class="modal-price" id="modalPrice"></div>
+      <p id="modalDesc"></p>
+      <div class="modal-actions">
+        <button class="modal-close" onclick="closeModal()">ปิด</button>
+        <button class="modal-add"   onclick="addToCart()">🛒 เพิ่มลงตะกร้า</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ TOAST ═══ -->
+<div class="toast" id="toast"></div>
+
+<script src="js/main.js"></script>
+<script>
+  function filterCards(cat, btn) {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    document.querySelectorAll('#cardGrid .card').forEach(c => {
+      const show = cat === 'all' || c.dataset.cat === cat;
+      c.classList.toggle('hidden', !show);
+    });
+  }
+</script>
+</body>
+</html>

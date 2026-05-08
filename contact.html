@@ -1,26 +1,267 @@
-<form class="bg-white p-6 rounded-xl shadow-lg">
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PetShop — ติดต่อเรา</title>
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    /* ── Contact layout ──────────────────────────────────── */
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.2fr;
+      gap: 3rem;
+      align-items: start;
+    }
+    @media (max-width: 700px) {
+      .contact-grid { grid-template-columns: 1fr; }
+    }
 
-  <input
-    type="text"
-    placeholder="ชื่อ"
-    class="border p-2 w-full mb-4"
-  >
+    /* ── Info side ────────────────────────────────────────── */
+    .contact-info h2 {
+      font-weight: 700; font-size: 1.7rem;
+      margin-bottom: .8rem; color: var(--dark);
+    }
+    .contact-info > p {
+      color: var(--muted); line-height: 1.8; margin-bottom: 2rem;
+    }
 
-  <input
-    type="email"
-    placeholder="อีเมล"
-    class="border p-2 w-full mb-4"
-  >
+    .info-item {
+      display: flex; align-items: flex-start; gap: 1rem;
+      padding: 1rem 0; border-bottom: 1px solid var(--border);
+    }
+    .info-item:last-child { border-bottom: none; }
+    .info-icon {
+      width: 40px; height: 40px; border-radius: 10px;
+      background: #fff7ed;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.1rem; flex-shrink: 0; margin-top: .1rem;
+    }
+    .info-text strong {
+      display: block; font-family: 'Prompt', sans-serif;
+      font-weight: 600; font-size: .9rem; color: var(--dark);
+      margin-bottom: .2rem;
+    }
+    .info-text span { color: var(--muted); font-size: .9rem; line-height: 1.6; }
 
-  <textarea
-    placeholder="ข้อความ"
-    class="border p-2 w-full mb-4"
-  ></textarea>
+    /* ── Social ──────────────────────────────────────────── */
+    .social-row { display: flex; gap: .8rem; margin-top: 1.5rem; }
+    .social-btn {
+      width: 40px; height: 40px; border-radius: 10px;
+      background: #fff; border: 1.5px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.1rem; cursor: pointer; transition: all .2s;
+      text-decoration: none;
+    }
+    .social-btn:hover { background: var(--primary); border-color: var(--primary); transform: translateY(-2px); }
 
-  <button
-    class="bg-blue-500 text-white px-4 py-2 rounded"
-  >
-    ส่งข้อความ
+    /* ── Form ─────────────────────────────────────────────── */
+    .contact-form {
+      background: #fff;
+      border-radius: var(--radius);
+      padding: 2.2rem;
+      box-shadow: var(--shadow-sm);
+      border: 1px solid var(--border);
+    }
+    .contact-form h3 {
+      font-weight: 700; font-size: 1.2rem;
+      margin-bottom: 1.5rem; color: var(--dark);
+    }
+
+    .form-row {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;
+    }
+    @media (max-width: 480px) { .form-row { grid-template-columns: 1fr; } }
+
+    .form-group { margin-bottom: 1.1rem; }
+    .form-group label {
+      display: block;
+      font-family: 'Prompt', sans-serif; font-weight: 600;
+      font-size: .83rem; color: var(--dark); margin-bottom: .35rem;
+    }
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      width: 100%; padding: .72rem 1rem;
+      border: 1.5px solid var(--border); border-radius: 10px;
+      font-family: 'Sarabun', sans-serif; font-size: .95rem; color: var(--dark);
+      background: #fafaf9; outline: none;
+      transition: border-color .2s, box-shadow .2s;
+    }
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(249,115,22,.12);
+      background: #fff;
+    }
+    .form-group textarea { resize: vertical; min-height: 120px; }
+
+    .form-submit {
+      width: 100%; padding: .88rem;
+      background: var(--primary); color: #fff; border: none;
+      border-radius: 10px;
+      font-family: 'Prompt', sans-serif; font-size: 1rem; font-weight: 600;
+      cursor: pointer;
+      box-shadow: 0 4px 14px rgba(249,115,22,.3);
+      transition: background .2s, box-shadow .2s, transform .2s;
+    }
+    .form-submit:hover {
+      background: var(--primary-dark);
+      box-shadow: 0 6px 20px rgba(249,115,22,.4);
+      transform: translateY(-1px);
+    }
+
+    /* ── Map placeholder ──────────────────────────────────── */
+    .map-box {
+      background: #f5f5f4;
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      height: 200px;
+      display: flex; align-items: center; justify-content: center;
+      color: var(--muted); font-size: .9rem;
+      margin-top: 1.5rem;
+      overflow: hidden;
+    }
+    .map-box iframe {
+      width: 100%; height: 100%; border: none; border-radius: var(--radius);
+    }
+  </style>
+</head>
+<body>
+
+<!-- ═══ NAVBAR ═══ -->
+<nav>
+  <a href="index.html" class="nav-logo">🐾 Pet<span>Shop</span></a>
+  <ul class="nav-links">
+    <li><a href="index.html">หน้าแรก</a></li>
+    <li><a href="products.html">สินค้า</a></li>
+    <li><a href="promotion.html">โปรโมชั่น</a></li>
+    <li><a href="contact.html">ติดต่อ</a></li>
+  </ul>
+  <button class="hamburger" onclick="toggleMenu()" aria-label="เมนู">
+    <span></span><span></span><span></span>
   </button>
+</nav>
+<div class="mobile-menu" id="mobileMenu">
+  <a href="index.html"     onclick="toggleMenu()">🏠 หน้าแรก</a>
+  <a href="products.html"  onclick="toggleMenu()">🛍 สินค้า</a>
+  <a href="promotion.html" onclick="toggleMenu()">🎉 โปรโมชั่น</a>
+  <a href="contact.html"   onclick="toggleMenu()">📩 ติดต่อ</a>
+</div>
 
-</form>
+<!-- ═══ PAGE HERO ═══ -->
+<div class="page-hero">
+  <h1>ติดต่อ<em>เรา</em></h1>
+  <p>มีคำถามหรือต้องการข้อมูลเพิ่มเติม? ทีมงานพร้อมช่วยเสมอ 🐾</p>
+</div>
+
+<!-- ═══ CONTACT ═══ -->
+<section>
+  <div class="container section">
+    <div class="contact-grid">
+
+      <!-- Left: Info -->
+      <div class="contact-info">
+        <h2>เราอยู่ที่นี่<br>เพื่อคุณ 🐾</h2>
+        <p>ทีมงานผู้เชี่ยวชาญของเราพร้อมให้คำแนะนำเกี่ยวกับสินค้า และบริการสัตว์เลี้ยงที่ดีที่สุดสำหรับคุณ</p>
+
+        <div class="info-item">
+          <div class="info-icon">📍</div>
+          <div class="info-text">
+            <strong>ที่อยู่</strong>
+            <span>123 ถ.สัตว์เลี้ยง แขวงบางรัก<br>กรุงเทพมหานคร 10500</span>
+          </div>
+        </div>
+
+        <div class="info-item">
+          <div class="info-icon">📞</div>
+          <div class="info-text">
+            <strong>โทรศัพท์</strong>
+            <span>02-123-4567<br>089-123-4567</span>
+          </div>
+        </div>
+
+        <div class="info-item">
+          <div class="info-icon">📧</div>
+          <div class="info-text">
+            <strong>อีเมล</strong>
+            <span>hello@petshop.co.th<br>support@petshop.co.th</span>
+          </div>
+        </div>
+
+        <div class="info-item">
+          <div class="info-icon">🕐</div>
+          <div class="info-text">
+            <strong>เวลาทำการ</strong>
+            <span>จันทร์–ศุกร์: 09:00–18:00<br>เสาร์–อาทิตย์: 10:00–17:00</span>
+          </div>
+        </div>
+
+        <div class="social-row">
+          <a class="social-btn" href="#" title="Facebook">📘</a>
+          <a class="social-btn" href="#" title="Line">💬</a>
+          <a class="social-btn" href="#" title="Instagram">📸</a>
+          <a class="social-btn" href="#" title="TikTok">🎵</a>
+        </div>
+
+        <div class="map-box">
+          <span>📍 แผนที่ร้าน PetShop</span>
+        </div>
+      </div>
+
+      <!-- Right: Form -->
+      <div class="contact-form">
+        <h3>✉️ ส่งข้อความหาเรา</h3>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>ชื่อ</label>
+            <input type="text" id="fname" placeholder="ชื่อของคุณ">
+          </div>
+          <div class="form-group">
+            <label>นามสกุล</label>
+            <input type="text" id="flastname" placeholder="นามสกุล">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>อีเมล</label>
+          <input type="email" id="femail" placeholder="example@email.com">
+        </div>
+
+        <div class="form-group">
+          <label>หัวข้อ</label>
+          <select id="fsubject">
+            <option value="">-- เลือกหัวข้อ --</option>
+            <option>สอบถามเกี่ยวกับสินค้า</option>
+            <option>การสั่งซื้อและจัดส่ง</option>
+            <option>คืนสินค้า / การรับประกัน</option>
+            <option>โปรโมชั่นและส่วนลด</option>
+            <option>อื่นๆ</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>ข้อความ</label>
+          <textarea id="fmsg" placeholder="เขียนข้อความของคุณที่นี่..."></textarea>
+        </div>
+
+        <button class="form-submit" onclick="submitForm()">
+          ส่งข้อความ ✉️
+        </button>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══ FOOTER ═══ -->
+<footer>
+  <p>© 2025 <span>PetShop</span> — ร้านของใช้สัตว์เลี้ยงคุณภาพ 🐾</p>
+</footer>
+
+<div class="toast" id="toast"></div>
+<script src="js/main.js"></script>
+</body>
+</html>
